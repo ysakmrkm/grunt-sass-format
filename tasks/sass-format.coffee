@@ -45,28 +45,89 @@ module.exports = (grunt) ->
             tmp = grunt.file.read(f)
             fs = require('fs')
             text = []
-            line = 0
+            line = 1
             indent = 0
+            msg = ''
+
             fs.readFileSync(f).toString().split('\n').forEach(
               (txt) ->
-                if /^([ \t]+)?.*{([ \t]+)?$/.test(txt)
-                  grunt.log.warn 'start:'+indent+'===================='
+                text.push(txt)
+            )
+
+            #console.log text
+
+            for i in [0..text.length-1]
+              #セレクタ記述
+              if /^([ \t]+)?.*[{,]([ \t]+)?$/.test(text[i])
+                #grunt.log.warn 'start:'+indent+'===================='
+
+                # セレクタ後スペース有無チェック
+                if /[^ ][ ][{,]$/.test(text[i])
+                  msg += 'スペース有り'
+                if /[^ ][ ]{2,}[{,]$/.test(text[i])
+                  msg += '!!スペース多い!!'
+                if /[^ ][{,]$/.test(text[i])
+                  msg += '!!スペースなし!!'
+
+                # セレクタ並び方チェック
+                if /^[^,]+[{,]$/.test(text[i])
+                  msg += '1行1プロパティ'
+                if /^([^,]+,){1,}[^,{]+{$/.test(text[i])
+                  msg += '!!1行に複数ある!!'
+
+                # セレクタ記述終了
+                if /^([ \t]+)?.*{([ \t]+)?$/.test(text[i])
                   indent++
 
-                  if /[ ]{/.test(txt)
-                    grunt.log.ok 'スペース有り'
-                  else
-                    grunt.log.warn '!スペースなし!'
+                console.log line+': '+msg+': '+text[i]
+                msg = ''
 
-                    console.log line+': '+txt
-                #console.log line+': '+txt
-                #text.push(txt)
-                line++
+              #セレクタ記述
+              if /^[^;]+;$/.test(text[i])
+                #インデントチェック
+                if /^[\t]{1,}/.test(text[i])
+                  msg += 'インデントがタブ'
+                if /^[ ]{1,}/.test(text[i])
+                  msg += 'インデントがホワイトスペース'
 
-                if /^([ \t]+)?.*}([ \t]+)?$/.test(txt)
-                  indent--
-                  grunt.log.ok 'end:'+indent+'===================='
-            )
+                console.log line+': '+msg+': '+text[i]
+                msg = ''
+
+              line++
+
+              if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
+                indent--
+                msg = ''
+                #grunt.log.ok 'end:'+indent+'===================='
+            #fs.readFileSync(f).toString().split('\n').forEach(
+            #  (txt) ->
+            #text.forEach(
+            #  (txt) ->
+            #    if /^([ \t]+)?.*[{,]([ \t]+)?$/.test(txt)
+            #      grunt.log.warn 'start:'+indent+'===================='
+
+            #      # 
+
+
+            #      if /^([ \t]+)?.*{([ \t]+)?$/.test(txt)
+            #        indent++
+
+            #      if /[ ][{,]$/.test(txt)
+            #        grunt.log.ok 'スペース有り'
+            #      if /[ ]{2,}[{,]$/.test(txt)
+            #        grunt.log.warn '!スペース多い!'
+            #      if /[^ ][{,]$/.test(txt)
+            #        grunt.log.warn '!スペースなし!'
+
+            #      console.log line+': '+txt
+            #    #console.log line+': '+txt
+            #    #text.push(txt)
+            #    line++
+
+            #    if /^([ \t]+)?.*}([ \t]+)?$/.test(txt)
+            #      indent--
+            #      grunt.log.ok 'end:'+indent+'===================='
+            #)
 
             #console.log text
 
