@@ -85,10 +85,23 @@ module.exports = (grunt) ->
               #セレクタ記述
               if /^[^;]+;$/.test(text[i])
                 #インデントチェック
+                #タブ
                 if /^[\t]{1,}/.test(text[i])
                   msg += 'インデントがタブ'
+                #ホワイトスペース
                 if /^[ ]{1,}/.test(text[i])
                   msg += 'インデントがホワイトスペース'
+
+                #インデント個数チェック
+                num = 1
+                regex = new RegExp('^([ \t]{'+num+','+num+'}){1,}[^ \t]')
+
+                if regex.test(text[i])
+                  msg += 'インデント'+num+'個'
+                else
+                  msg += 'インデント指定通りじゃない'
+
+
 
                 console.log line+': '+msg+': '+text[i]
                 msg = ''
