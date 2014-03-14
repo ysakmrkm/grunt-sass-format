@@ -63,17 +63,22 @@ module.exports = (grunt) ->
 
                 # セレクタ後スペース有無チェック
                 if /[^ ][ ][{,]$/.test(text[i])
-                  msg += 'スペース有り'
+                  #msg += 'スペース有り'
+                  msg += ''
                 if /[^ ][ ]{2,}[{,]$/.test(text[i])
-                  msg += '!!スペース多い!!'
+                  #msg += '!!スペース多い!!'
+                  msg += ''
                 if /[^ ][{,]$/.test(text[i])
-                  msg += '!!スペースなし!!'
+                  #msg += '!!スペースなし!!'
+                  msg += ''
 
                 # セレクタ並び方チェック
                 if /^[^,]+[{,]$/.test(text[i])
-                  msg += '1行1プロパティ'
+                  #msg += '1行1プロパティ'
+                  msg += ''
                 if /^([^,]+,){1,}[^,{]+{$/.test(text[i])
-                  msg += '!!1行に複数ある!!'
+                  #msg += '!!1行に複数ある!!'
+                  msg += ''
 
                 # セレクタ記述終了
                 if /^([ \t]+)?.*{([ \t]+)?$/.test(text[i])
@@ -84,8 +89,13 @@ module.exports = (grunt) ->
 
               #セレクタ記述
               if /^[^;]+;$/.test(text[i])
+
                 #インデントチェック
+                #!!要改良!!
+
                 #タブ
+                if /^[^\t ]{1,}/.test(text[i])
+                  msg += 'インデント無し'
                 if /^[\t]{1,}/.test(text[i])
                   msg += 'インデントがタブ'
                 #ホワイトスペース
@@ -101,6 +111,11 @@ module.exports = (grunt) ->
                 else
                   msg += 'インデント指定通りじゃない'
 
+                #コロンの後のスペース
+                if /: /.test(text[i])
+                  msg += 'スペース有り'
+                if /:[^ ]/.test(text[i])
+                  msg += 'スペース無し'
 
 
                 console.log line+': '+msg+': '+text[i]
