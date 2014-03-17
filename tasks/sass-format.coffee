@@ -27,6 +27,48 @@ module.exports = (grunt) ->
 
       files = config.files
 
+      errMsg = []
+      okMsg = []
+      indentChar = '\t'
+      indentStep = 1
+
+
+      #インデントチェック
+      #!!要改良!!
+      indentCheck =
+        (indent,txt)->
+          indent = indent
+          text = txt
+
+          console.log indent
+
+          if indent is 0
+            if /^[ \t]{1,}/.test(text)
+              errMsg.push('インデントあり')
+
+          else
+            #タブ
+            if /^[^ \t]+/.test(text)
+              errMsg.push('インデント無し')
+              #msg += 'インデント無し'
+            if /^[\t]{1,}/.test(text)
+              okMsg.push('インデントがタブ')
+              #msg += 'インデントがタブ'
+            #ホワイトスペース
+            if /^[ ]{1,}/.test(text)
+              okMsg.push('インデントがホワイトスペース')
+              #msg += 'インデントがホワイトスペース'
+
+            #インデント個数チェック
+            regex = new RegExp('^(['+indentChar+']{'+indentStep+','+indentStep+'}){1,}[^ \t]')
+
+            if regex.test(text)
+              okMsg.push('インデント'+indentStep+'個')
+              #msg += 'インデント'+indentStep+'個'
+            else
+              errMsg.push('インデント指定通りじゃない')
+              #msg += 'インデント指定通りじゃない'
+
       ## Iterate over all specified file groups.
       #this.files.forEach(
       files.forEach(
@@ -47,7 +89,7 @@ module.exports = (grunt) ->
             text = []
             line = 1
             indent = 0
-            msg = ''
+            #msg = ''
 
             fs.readFileSync(f).toString().split('\n').forEach(
               (txt) ->
@@ -57,68 +99,71 @@ module.exports = (grunt) ->
             #console.log text
 
             for i in [0..text.length-1]
+              errMsg = []
+              okMsg = []
+
               #セレクタ記述
               if /^([ \t]+)?.*[{,]([ \t]+)?$/.test(text[i])
                 #grunt.log.warn 'start:'+indent+'===================='
 
+                # セレクタ前インデントチェック
+                indentCheck(indent,text[i])
+
                 # セレクタ後スペース有無チェック
                 if /[^ ][ ][{,]$/.test(text[i])
+                  okMsg.push('スペース有り')
                   #msg += 'スペース有り'
-                  msg += ''
+                  #msg += ''
                 if /[^ ][ ]{2,}[{,]$/.test(text[i])
+                  errMsg.push('スペース多い')
                   #msg += '!!スペース多い!!'
-                  msg += ''
+                  #msg += ''
                 if /[^ ][{,]$/.test(text[i])
+                  errMsg.push('スペースなし')
                   #msg += '!!スペースなし!!'
-                  msg += ''
+                  #msg += ''
 
                 # セレクタ並び方チェック
                 if /^[^,]+[{,]$/.test(text[i])
+                  okMsg.push('1行1プロパティ')
                   #msg += '1行1プロパティ'
-                  msg += ''
+                  #msg += ''
                 if /^([^,]+,){1,}[^,{]+{$/.test(text[i])
+                  errMsg.push('1行に複数ある')
                   #msg += '!!1行に複数ある!!'
-                  msg += ''
+                  #msg += ''
 
                 # セレクタ記述終了
                 if /^([ \t]+)?.*{([ \t]+)?$/.test(text[i])
                   indent++
 
-                console.log line+': '+msg+': '+text[i]
-                msg = ''
+                if grunt.log.wordlist(okMsg).length > 0
+                  grunt.log.ok grunt.log.wordlist(okMsg,{color:'green'})
+                if grunt.log.wordlist(errMsg).length > 0
+                  grunt.log.error grunt.log.wordlist(errMsg,{color:'red'})
+                console.log line+': '+text[i]
+                #msg = ''
 
               #セレクタ記述
               if /^[^;]+;$/.test(text[i])
 
-                #インデントチェック
-                #!!要改良!!
 
-                #タブ
-                if /^[^\t ]{1,}/.test(text[i])
-                  msg += 'インデント無し'
-                if /^[\t]{1,}/.test(text[i])
-                  msg += 'インデントがタブ'
-                #ホワイトスペース
-                if /^[ ]{1,}/.test(text[i])
-                  msg += 'インデントがホワイトスペース'
-
-                #インデント個数チェック
-                num = 1
-                regex = new RegExp('^([ \t]{'+num+','+num+'}){1,}[^ \t]')
-
-                if regex.test(text[i])
-                  msg += 'インデント'+num+'個'
-                else
-                  msg += 'インデント指定通りじゃない'
+                indentCheck(indent,text[i])
 
                 #コロンの後のスペース
                 if /: /.test(text[i])
-                  msg += 'スペース有り'
+                  okMsg.push('コロンの後にスペース有り')
+                  #msg += 'スペース有り'
                 if /:[^ ]/.test(text[i])
-                  msg += 'スペース無し'
+                  errMsg.push('コロンの後にスペース無し')
+                  #msg += 'スペース無し'
 
 
-                console.log line+': '+msg+': '+text[i]
+                if grunt.log.wordlist(okMsg).length > 0
+                  grunt.log.ok grunt.log.wordlist(okMsg,{color:'green'})
+                if grunt.log.wordlist(errMsg).length > 0
+                  grunt.log.error grunt.log.wordlist(errMsg,{color:'red'})
+                console.log line+': '+text[i]
                 msg = ''
 
               line++
