@@ -40,7 +40,7 @@ module.exports = (grunt) ->
           indent = indent
           text = txt
 
-          console.log indent
+          #console.log indent
 
           if indent is 0
             if /^[ \t]{1,}/.test(text)
@@ -50,30 +50,25 @@ module.exports = (grunt) ->
             #タブ
             if /^[^ \t]+/.test(text)
               errMsg.push('インデント無し')
-              #msg += 'インデント無し'
             if /^[\t]{1,}/.test(text)
               okMsg.push('インデントがタブ')
-              #msg += 'インデントがタブ'
             #ホワイトスペース
             if /^[ ]{1,}/.test(text)
               okMsg.push('インデントがホワイトスペース')
-              #msg += 'インデントがホワイトスペース'
 
             #インデント個数チェック
             regex = new RegExp('^(['+indentChar+']{'+indentStep+','+indentStep+'}){1,}[^ \t]')
 
             if regex.test(text)
               okMsg.push('インデント'+indentStep+'個')
-              #msg += 'インデント'+indentStep+'個'
             else
               errMsg.push('インデント指定通りじゃない')
-              #msg += 'インデント指定通りじゃない'
 
       ## Iterate over all specified file groups.
       #this.files.forEach(
       files.forEach(
         (f) ->
-          console.log f
+          #console.log f
           # Concat specified files.
           # Warn on and remove invalid source files (if nonull was set).
           if !grunt.file.exists(f)
@@ -104,45 +99,27 @@ module.exports = (grunt) ->
 
               #セレクタ記述
               if /^([ \t]+)?.*[{,]([ \t]+)?$/.test(text[i])
-                #grunt.log.warn 'start:'+indent+'===================='
 
                 # セレクタ前インデントチェック
                 indentCheck(indent,text[i])
 
                 # セレクタ後スペース有無チェック
                 if /[^ ][ ][{,]$/.test(text[i])
-                  okMsg.push('スペース有り')
-                  #msg += 'スペース有り'
-                  #msg += ''
+                  okMsg.push('セレクタ後スペース有り')
                 if /[^ ][ ]{2,}[{,]$/.test(text[i])
-                  errMsg.push('スペース多い')
-                  #msg += '!!スペース多い!!'
-                  #msg += ''
+                  errMsg.push('セレクタ後スペース多い')
                 if /[^ ][{,]$/.test(text[i])
-                  errMsg.push('スペースなし')
-                  #msg += '!!スペースなし!!'
-                  #msg += ''
+                  errMsg.push('スセレクタ後ペースなし')
 
                 # セレクタ並び方チェック
                 if /^[^,]+[{,]$/.test(text[i])
                   okMsg.push('1行1プロパティ')
-                  #msg += '1行1プロパティ'
-                  #msg += ''
                 if /^([^,]+,){1,}[^,{]+{$/.test(text[i])
                   errMsg.push('1行に複数ある')
-                  #msg += '!!1行に複数ある!!'
-                  #msg += ''
 
                 # セレクタ記述終了
                 if /^([ \t]+)?.*{([ \t]+)?$/.test(text[i])
                   indent++
-
-                if grunt.log.wordlist(okMsg).length > 0
-                  grunt.log.ok grunt.log.wordlist(okMsg,{color:'green'})
-                if grunt.log.wordlist(errMsg).length > 0
-                  grunt.log.error grunt.log.wordlist(errMsg,{color:'red'})
-                console.log line+': '+text[i]
-                #msg = ''
 
               #セレクタ記述
               if /^[^;]+;$/.test(text[i])
@@ -152,25 +129,31 @@ module.exports = (grunt) ->
 
                 #コロンの後のスペース
                 if /: /.test(text[i])
-                  okMsg.push('コロンの後にスペース有り')
-                  #msg += 'スペース有り'
+                  okMsg.push('コロン後スペース有り')
                 if /:[^ ]/.test(text[i])
-                  errMsg.push('コロンの後にスペース無し')
-                  #msg += 'スペース無し'
+                  errMsg.push('コロン後スペース無し')
+
+              if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
 
 
-                if grunt.log.wordlist(okMsg).length > 0
-                  grunt.log.ok grunt.log.wordlist(okMsg,{color:'green'})
-                if grunt.log.wordlist(errMsg).length > 0
-                  grunt.log.error grunt.log.wordlist(errMsg,{color:'red'})
-                console.log line+': '+text[i]
-                msg = ''
+                #閉じ括弧の後に空白行
+                if /^$/.test(text[i+1])
+                  okMsg.push('閉じ括弧後空白行有り')
+                if /}/.test(text[i+1])
+                else
+                  errMsg.push('閉じ括弧後空白行無し')
+                
+                indent--
+
+              console.log line+': '+text[i]
+              if grunt.log.wordlist(okMsg).length > 0
+                grunt.log.ok grunt.log.wordlist(okMsg,{color:'green'})
+              if grunt.log.wordlist(errMsg).length > 0
+                grunt.log.error grunt.log.wordlist(errMsg,{color:'red'})
 
               line++
 
-              if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
-                indent--
-                msg = ''
+
                 #grunt.log.ok 'end:'+indent+'===================='
             #fs.readFileSync(f).toString().split('\n').forEach(
             #  (txt) ->
