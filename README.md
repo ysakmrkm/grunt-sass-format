@@ -1,6 +1,6 @@
 # grunt-sass-format
 
-> Format sass you want.
+> Check format of sass you wish.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.3`
@@ -17,66 +17,94 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-sass-format');
 ```
 
-## The "sass_format" task
+## The "sassFormat" task
 
 ### Overview
 In your project's Gruntfile, add a section named `sass_format` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  sass_format: {
+  sassFormat: {
     options: {
-      // Task-specific options go here.
+      indentChar:'\t'
+      indentStep:1
+      blankLine:
+        property:true
+        close:true
+      whiteSpace:
+        selector:true
+        property:true
+      order:true
+      debug:true
     },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
+    files:['path/to/target/files']
   },
 });
 ```
 
 ### Options
 
-#### options.separator
+#### options.indentChar
 Type: `String`
-Default value: `',  '`
+Default value: `'\t'`
 
-A string value that is used to do something with whatever.
+#### options.indentStep
+Type: `Number`
+Default value: `1`
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.blankLine
 
-A string value that is used to do something else with whatever else.
+##### options.blankLine.property
+Type: `Boolean`
+Default value: `true`
+
+##### options.blankLine.close
+Type: `Boolean`
+Default value: `true`
+
+#### options.whiteSpace
+
+##### options.whiteSpace.selector
+Type: `Boolean`
+Default value: `true`
+
+##### options.whiteSpace.property
+Type: `Boolean`
+Default value: `true`
+
+#### options.order
+Type: `Boolean`
+Default value: `true`
+
+#### options.debug
+Type: `Boolean`
+Default value: `false`
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
 
 ```js
 grunt.initConfig({
   sass_format: {
-    options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      ['src/target1.scss', 'src/target2.scss'],
     },
   },
 });
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
 
 ```js
 grunt.initConfig({
   sass_format: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      indentChar:' '
+      indentStep:4
     },
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      ['src/target1.scss', 'src/target2.scss'],
     },
   },
 });
@@ -86,4 +114,4 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+* 2014-03-23   v0.0.1   first release.
