@@ -35,7 +35,7 @@ grunt.initConfig({
         selector:true
         property:true
       order:true
-      debug:true
+      debug:false
     },
     files:['path/to/target/files']
   },

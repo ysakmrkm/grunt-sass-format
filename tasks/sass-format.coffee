@@ -28,7 +28,7 @@ module.exports = (grunt) ->
       selector:true
       property:true
     order:true
-    debug:true
+    debug:false
   }
 
   grunt.registerTask('sassFormat', 'Check format of sass you wish.',
