@@ -37,6 +37,6 @@
     "grunt": "~0.4.3"
   },
   "keywords": [
-    "gruntplugin,sass,scss,style,format,syntax"
+    "gruntplugin, sass, scss, style, format, syntax"
   ]
 }
