@@ -1,7 +1,7 @@
 {
   "name": "grunt-sass-format",
   "description": "Check format of sass you wish.",
-  "version": "0.0.1",
+  "version": "0.0.1.1",
   "homepage": "https://github.com/ysakmrkm/grunt-sass-format",
   "author": {
     "name": "ysakmrkm",
