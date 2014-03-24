@@ -35,7 +35,7 @@ grunt.initConfig({
         selector:true
         property:true
       order:true
-      debug:true
+      debug:false
     },
     files:['path/to/target/files']
   },
@@ -115,3 +115,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 * 2014-03-23   v0.0.1   first release.
+* 2014-03-24   v0.0.3   Modify package.json
