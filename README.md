@@ -35,6 +35,7 @@ grunt.initConfig({
         selector:true
         property:true
       order:true
+      lang:'en'
       debug:false
     },
     files:['path/to/target/files']
@@ -76,6 +77,10 @@ Default value: `true`
 Type: `Boolean`
 Default value: `true`
 
+#### options.lang
+Type: `String`
+Default value: `'en'`
+
 #### options.debug
 Type: `Boolean`
 Default value: `false`
@@ -116,3 +121,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ## Release History
 * 2014-03-23   v0.0.1   first release.
 * 2014-03-24   v0.0.3   Modify package.json
+* 2014-03-26   v0.0.4   Modify message to English.
