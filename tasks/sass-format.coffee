@@ -28,7 +28,8 @@ module.exports = (grunt) ->
       selector:true
       property:true
     order:true
-    debug:true
+    lang:'en'
+    debug:false
   }
 
   grunt.registerTask('sassFormat', 'Check format of sass you wish.',
@@ -55,21 +56,32 @@ module.exports = (grunt) ->
           if indent is 0
             regex = new RegExp('^['+indentChar+']+')
             if regex.test(text)
-              errMsg.push('インデントあり')
+              if options.lang is 'en'
+                errMsg.push('has indent!')
+              if options.lang is 'ja'
+                errMsg.push('インデントあり')
 
           else
             regex = new RegExp('^[^'+indentChar+']+')
             if regex.test(text)
-              errMsg.push('インデント無し')
+              if options.lang is 'en'
+                errMsg.push('No indent!')
+              if options.lang is 'ja'
+                errMsg.push('インデント無し')
 
             #インデント個数チェック
-            #step = new RegExp('^(['+indentChar+']{'+indentStep+','+(indentStep * indent)+'}){1,}[^ \t]')
             step = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'})[^'+indentChar+']')
 
             if step.test(text)
-              okMsg.push('インデント'+(indentStep * indent)+'個')
+              if options.lang is 'en'
+                okMsg.push((indentStep * indent)+' indents.')
+              if options.lang is 'ja'
+                okMsg.push('インデント'+(indentStep * indent)+'個')
             else
-              errMsg.push('インデント指定通りじゃない')
+              if options.lang is 'en'
+                errMsg.push('Wrong amount of indents!')
+              if options.lang is 'ja'
+                errMsg.push('インデント指定通りじゃない')
 
 
       #空白行チェック
@@ -79,11 +91,17 @@ module.exports = (grunt) ->
           text = txt
 
           if /^$/.test(text)
-            okMsg.push('空白行有り')
+            if options.lang is 'en'
+              okMsg.push('Has blank line.')
+            if options.lang is 'ja'
+              okMsg.push('空白行有り')
           else
             regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])')
             if regex.test(text)
-              errMsg.push('空白行無し')
+              if options.lang is 'en'
+                errMsg.push('No blank line!')
+              if options.lang is 'ja'
+                errMsg.push('空白行無し')
 
       # セレクタ/コロン後スペース有無チェック
       checkWhiteSpace =
@@ -93,16 +111,31 @@ module.exports = (grunt) ->
 
           if mode == 'selector'
             if /[^ ][ ][,{]$/.test(text)
-              okMsg.push('セレクタ後スペース有り')
+              if options.lang is 'en'
+                okMsg.push('Has space. [selector]')
+              if options.lang is 'ja'
+                okMsg.push('セレクタ後スペース有り')
             if /[^ ][ ]{2,}[,{]$/.test(text)
-              errMsg.push('セレクタ後スペース多い')
+              if options.lang is 'en'
+                errMsg.push('Many spaces! [selector]')
+              if options.lang is 'ja'
+                errMsg.push('セレクタ後スペース多い')
             if /[^ ][,{]$/.test(text)
-              errMsg.push('セレクタ後スペースなし')
+              if options.lang is 'en'
+                errMsg.push('No space! [selector]')
+              if options.lang is 'ja'
+                errMsg.push('セレクタ後スペースなし')
           if mode == 'property'
             if /: /.test(text)
-              okMsg.push('コロン後スペース有り')
+              if options.lang is 'en'
+                okMsg.push('Has space. [property]')
+              if options.lang is 'ja'
+                okMsg.push('コロン後スペース有り')
             if /:[^ ]/.test(text)
-              errMsg.push('コロン後スペース無し')
+              if options.lang is 'en'
+                errMsg.push('No space! [property]')
+              if options.lang is 'ja'
+                errMsg.push('コロン後スペース無し')
 
       # セレクタ並び方チェック
       checkOrder =
@@ -110,9 +143,15 @@ module.exports = (grunt) ->
           text = txt
 
           if /^[^,]+[,{]$/.test(text)
-            okMsg.push('1行1プロパティ')
+            if options.lang is 'en'
+              okMsg.push('one property.')
+            if options.lang is 'ja'
+              okMsg.push('1行1プロパティ')
           if /^([^,]+,){1,}[^,{]+{$/.test(text)
-            errMsg.push('1行に複数ある')
+            if options.lang is 'en'
+              errMsg.push('Many properties!')
+            if options.lang is 'ja'
+              errMsg.push('1行に複数ある')
 
       files.forEach(
         (f) ->
@@ -128,7 +167,6 @@ module.exports = (grunt) ->
             text = []
             line = 1
             indent = 0
-            #msg = ''
 
             fs.readFileSync(f).toString().split('\n').forEach(
               (txt) ->
