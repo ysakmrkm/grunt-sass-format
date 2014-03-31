@@ -26,17 +26,19 @@ In your project's Gruntfile, add a section named `sass_format` to the data objec
 grunt.initConfig({
   sassFormat: {
     options: {
-      indentChar:'\t'
-      indentStep:1
-      blankLine:
-        property:true
-        close:true
-      whiteSpace:
-        selector:true
-        property:true
-      order:true
-      lang:'en'
-      debug:false
+      indentChar: '\t',
+      indentStep: 1,
+      blankLine: {
+        property: true,
+        close: true
+      },
+      whiteSpace: {
+        selector: true,
+        property: true
+      },
+      order: true,
+      lang: 'en',
+      debug: false
     },
     files:['path/to/target/files']
   },
