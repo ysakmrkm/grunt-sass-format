@@ -29,7 +29,7 @@ module.exports = (grunt) ->
     nodeunit:
       tests: ['test/*_test.js']
 
-    sassFormt:
+    sassFormat:
       files:[]
   )
 
