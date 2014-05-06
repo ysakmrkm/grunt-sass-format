@@ -122,3 +122,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 2014-03-23   v0.0.1   first release.
 * 2014-03-24   v0.0.3   Modify package.json
 * 2014-03-26   v0.0.4   Modify message to English.
+* 2014-05-06   v0.0.5   Merge PR #3
