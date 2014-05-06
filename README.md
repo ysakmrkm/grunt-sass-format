@@ -26,17 +26,19 @@ In your project's Gruntfile, add a section named `sass_format` to the data objec
 grunt.initConfig({
   sassFormat: {
     options: {
-      indentChar:'\t'
-      indentStep:1
-      blankLine:
-        property:true
-        close:true
-      whiteSpace:
-        selector:true
-        property:true
-      order:true
-      lang:'en'
-      debug:false
+      indentChar: '\t',
+      indentStep: 1,
+      blankLine: {
+        property: true,
+        close: true
+      },
+      whiteSpace: {
+        selector: true,
+        property: true
+      },
+      order: true,
+      lang: 'en',
+      debug: false
     },
     files:['path/to/target/files']
   },
@@ -123,3 +125,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 2014-03-24   v0.0.3   Modify package.json
 * 2014-03-26   v0.0.4   Modify message to English.
 * 2014-05-06   v0.0.5   Merge PR #3
+* 2014-05-06   v0.0.6   Merge PR #4
