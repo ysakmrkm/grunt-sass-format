@@ -97,6 +97,7 @@ module.exports = (grunt) ->
               okMsg.push('空白行有り')
           else
             regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])$')
+
             if regex.test(text)
               if options.lang is 'en'
                 errMsg.push('No blank line!')
@@ -238,10 +239,10 @@ module.exports = (grunt) ->
               #閉じカッコ
               if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
 
+                indent--
+
                 if options.blankLine.close
                   checkBlankLine(indent,text[i+1])
-
-                indent--
 
 
               if options.debug
