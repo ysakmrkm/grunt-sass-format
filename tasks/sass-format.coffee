@@ -96,7 +96,7 @@ module.exports = (grunt) ->
             if options.lang is 'ja'
               okMsg.push('空白行有り')
           else
-            regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])')
+            regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])$')
             if regex.test(text)
               if options.lang is 'en'
                 errMsg.push('No blank line!')
