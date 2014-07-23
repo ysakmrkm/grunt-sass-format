@@ -237,7 +237,7 @@ module.exports = (grunt) ->
                   checkBlankLine(indent,text[i+1])
 
               #閉じカッコ
-              if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
+              if /^([ \t]+)?.*}([ \t/*]+)?$/.test(text[i])
 
                 indent--
 
