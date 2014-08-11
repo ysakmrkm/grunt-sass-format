@@ -20,7 +20,7 @@ grunt.loadNpmTasks('grunt-sass-format');
 ## The "sassFormat" task
 
 ### Overview
-In your project's Gruntfile, add a section named `sass_format` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `sassFormat` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
@@ -40,8 +40,8 @@ grunt.initConfig({
       lang: 'en',
       debug: false
     },
-    files:['path/to/target/files']
-  },
+    files: ['path/to/target/files']
+  }
 });
 ```
 
@@ -93,11 +93,9 @@ Default value: `false`
 
 ```js
 grunt.initConfig({
-  sass_format: {
-    files: {
-      ['src/target1.scss', 'src/target2.scss'],
-    },
-  },
+  sassFormat: {
+    files: ['src/target1.scss', 'src/target2.scss']
+  }
 });
 ```
 
@@ -105,15 +103,13 @@ grunt.initConfig({
 
 ```js
 grunt.initConfig({
-  sass_format: {
+  sassFormat: {
     options: {
-      indentChar:' '
-      indentStep:4
+      indentChar: ' ',
+      indentStep: 4
     },
-    files: {
-      ['src/target1.scss', 'src/target2.scss'],
-    },
-  },
+    files: ['src/target1.scss', 'src/target2.scss']
+  }
 });
 ```
 
