@@ -21,6 +21,7 @@ module.exports = (grunt) ->
   defaultOptions = {
     indentChar:'\t'
     indentStep:1
+    indent:true
     blankLine:
       property:true
       close:true
@@ -70,7 +71,7 @@ module.exports = (grunt) ->
                 errMsg.push('インデント無し')
 
             #インデント個数チェック
-            step = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'})[^'+indentChar+']')
+            step = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'})[^\t ]')
 
             if step.test(text)
               if options.lang is 'en'
@@ -96,7 +97,8 @@ module.exports = (grunt) ->
             if options.lang is 'ja'
               okMsg.push('空白行有り')
           else
-            regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])')
+            regex = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'}){1,}({|[^{]+[,{])$')
+
             if regex.test(text)
               if options.lang is 'en'
                 errMsg.push('No blank line!')
@@ -105,16 +107,23 @@ module.exports = (grunt) ->
 
       # セレクタ/コロン後スペース有無チェック
       checkWhiteSpace =
-        (mode,txt)->
+        (mode,txt,bool)->
           mode = mode
           text = txt
+          bool = bool
 
           if mode == 'selector'
             if /[^ ][ ][,{]$/.test(text)
               if options.lang is 'en'
-                okMsg.push('Has space. [selector]')
+                if bool
+                  okMsg.push('Has space. [selector]')
+                else
+                  errMsg.push('Has space. [selector]')
               if options.lang is 'ja'
-                okMsg.push('セレクタ後スペース有り')
+                if bool
+                  okMsg.push('セレクタ後スペース有り')
+                else
+                  errMsg.push('セレクタ後スペース有り')
             if /[^ ][ ]{2,}[,{]$/.test(text)
               if options.lang is 'en'
                 errMsg.push('Many spaces! [selector]')
@@ -122,20 +131,38 @@ module.exports = (grunt) ->
                 errMsg.push('セレクタ後スペース多い')
             if /[^ ][,{]$/.test(text)
               if options.lang is 'en'
-                errMsg.push('No space! [selector]')
+                if bool
+                  okMsg.push('No space! [selector]')
+                else
+                  errMsg.push('No space! [selector]')
               if options.lang is 'ja'
-                errMsg.push('セレクタ後スペースなし')
+                if bool
+                  okMsg.push('セレクタ後スペースなし')
+                else
+                  errMsg.push('セレクタ後スペースなし')
           if mode == 'property'
             if /: /.test(text)
               if options.lang is 'en'
-                okMsg.push('Has space. [property]')
+                if bool
+                  okMsg.push('Has space. [property]')
+                else
+                  errMsg.push('Has space. [property]')
               if options.lang is 'ja'
-                okMsg.push('コロン後スペース有り')
+                if bool
+                  okMsg.push('コロン後スペース有り')
+                else
+                  errMsg.push('コロン後スペース有り')
             if /:[^ ]/.test(text)
               if options.lang is 'en'
-                errMsg.push('No space! [property]')
+                if bool
+                  errMsg.push('No space! [property]')
+                else
+                  okMsg.push('No space! [property]')
               if options.lang is 'ja'
-                errMsg.push('コロン後スペース無し')
+                if bool
+                  errMsg.push('コロン後スペース無し')
+                else
+                  okMsg.push('コロン後スペース無し')
 
       # セレクタ並び方チェック
       checkOrder =
@@ -147,7 +174,7 @@ module.exports = (grunt) ->
               okMsg.push('one property.')
             if options.lang is 'ja'
               okMsg.push('1行1プロパティ')
-          if /^([^,]+,){1,}[^,{]+{$/.test(text)
+          if /^(([^,{]+|[^,]+{[^}]+}[^,]+),){1,}([^,{]+|[^,]+{[^}]+}[^,]+){$/.test(text)
             if options.lang is 'en'
               errMsg.push('Many properties!')
             if options.lang is 'ja'
@@ -187,8 +214,8 @@ module.exports = (grunt) ->
                   checkIndent(indent,text[i])
 
                 # セレクタ後スペース有無チェック
-                if options.whiteSpace.selector
-                  checkWhiteSpace('selector',text[i])
+                #if options.whiteSpace.selector
+                checkWhiteSpace('selector',text[i],options.whiteSpace.selector)
 
                 # セレクタ並び方チェック
                 if options.order
@@ -204,19 +231,19 @@ module.exports = (grunt) ->
                 if options.indent
                   checkIndent(indent,text[i])
 
-                if options.whiteSpace.property
-                  checkWhiteSpace('property',text[i])
+                #if options.whiteSpace.property
+                checkWhiteSpace('property',text[i],options.whiteSpace.property)
 
                 if options.blankLine.property
                   checkBlankLine(indent,text[i+1])
 
               #閉じカッコ
-              if /^([ \t]+)?.*}([ \t]+)?$/.test(text[i])
+              if /^([ \t]+)?.*}([ \t/*]+)?$/.test(text[i])
+
+                indent--
 
                 if options.blankLine.close
                   checkBlankLine(indent,text[i+1])
-
-                indent--
 
 
               if options.debug
