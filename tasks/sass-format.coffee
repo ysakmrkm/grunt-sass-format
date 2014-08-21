@@ -21,6 +21,7 @@ module.exports = (grunt) ->
   defaultOptions = {
     indentChar:'\t'
     indentStep:1
+    indent:true
     blankLine:
       property:true
       close:true
@@ -70,7 +71,7 @@ module.exports = (grunt) ->
                 errMsg.push('インデント無し')
 
             #インデント個数チェック
-            step = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'})[^'+indentChar+']')
+            step = new RegExp('^(['+indentChar+']{'+(indentStep * indent)+'})[^\t ]')
 
             if step.test(text)
               if options.lang is 'en'

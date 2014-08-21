@@ -28,6 +28,7 @@ grunt.initConfig({
     options: {
       indentChar: '\t',
       indentStep: 1,
+      indent: true,
       blankLine: {
         property: true,
         close: true
