@@ -173,7 +173,7 @@ module.exports = (grunt) ->
               okMsg.push('one property.')
             if options.lang is 'ja'
               okMsg.push('1行1プロパティ')
-          if /^([^,]+,){1,}[^,{]+{$/.test(text)
+          if /^(([^,{]+|[^,]+{[^}]+}[^,]+),){1,}([^,{]+|[^,]+{[^}]+}[^,]+){$/.test(text)
             if options.lang is 'en'
               errMsg.push('Many properties!')
             if options.lang is 'ja'
