@@ -20,7 +20,7 @@ grunt.loadNpmTasks('grunt-sass-format');
 ## The "sassFormat" task
 
 ### Overview
-In your project's Gruntfile, add a section named `sass_format` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `sassFormat` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
@@ -41,8 +41,8 @@ grunt.initConfig({
       lang: 'en',
       debug: false
     },
-    files:['path/to/target/files']
-  },
+    files: ['path/to/target/files']
+  }
 });
 ```
 
@@ -98,11 +98,9 @@ Default value: `false`
 
 ```js
 grunt.initConfig({
-  sass_format: {
-    files: {
-      ['src/target1.scss', 'src/target2.scss'],
-    },
-  },
+  sassFormat: {
+    files: ['src/target1.scss', 'src/target2.scss']
+  }
 });
 ```
 
@@ -110,15 +108,13 @@ grunt.initConfig({
 
 ```js
 grunt.initConfig({
-  sass_format: {
+  sassFormat: {
     options: {
-      indentChar:' '
-      indentStep:4
+      indentChar: ' ',
+      indentStep: 4
     },
-    files: {
-      ['src/target1.scss', 'src/target2.scss'],
-    },
-  },
+    files: ['src/target1.scss', 'src/target2.scss']
+  }
 });
 ```
 
@@ -131,3 +127,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 2014-03-26   v0.0.4   Modify message to English.
 * 2014-05-06   v0.0.5   Merge PR #3
 * 2014-05-06   v0.0.6   Merge PR #4
+* 2014-08-21   v0.0.7   Merge PR #7 / Update functions / Enable indent check
