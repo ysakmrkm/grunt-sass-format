@@ -56,6 +56,10 @@ Default value: `'\t'`
 Type: `Number`
 Default value: `1`
 
+#### options.indent
+Type: `Boolean`
+Default value: `true`
+
 #### options.blankLine
 
 ##### options.blankLine.property
