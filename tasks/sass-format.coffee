@@ -242,6 +242,9 @@ module.exports = (grunt) ->
 
                 indent--
 
+                if options.indent
+                  checkIndent(indent,text[i])
+
                 if options.blankLine.close
                   checkBlankLine(indent,text[i+1])
 
