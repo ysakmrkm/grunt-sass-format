@@ -132,14 +132,14 @@ module.exports = (grunt) ->
             if /[^ ][,{]$/.test(text)
               if options.lang is 'en'
                 if bool
-                  okMsg.push('No space! [selector]')
-                else
                   errMsg.push('No space! [selector]')
+                else
+                  okMsg.push('No space! [selector]')
               if options.lang is 'ja'
                 if bool
-                  okMsg.push('セレクタ後スペースなし')
-                else
                   errMsg.push('セレクタ後スペースなし')
+                else
+                  okMsg.push('セレクタ後スペースなし')
           if mode == 'property'
             if /: /.test(text)
               if options.lang is 'en'
