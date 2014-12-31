@@ -33,14 +33,13 @@ module.exports = (grunt) ->
     debug:false
   }
 
-  grunt.registerTask('sassFormat', 'Check format of sass you wish.',
+  grunt.registerMultiTask('sassFormat', 'Check format of sass you wish.',
     () ->
       options = {}
 
       config = grunt.config('sassFormat')
       options = defaultOptions
       merge(options,config.options)
-      files = config.files
 
       errMsg = []
       okMsg = []
@@ -83,7 +82,6 @@ module.exports = (grunt) ->
                 errMsg.push('Wrong amount of indents!')
               if options.lang is 'ja'
                 errMsg.push('インデント指定通りじゃない')
-
 
       #空白行チェック
       checkBlankLine =
@@ -132,14 +130,14 @@ module.exports = (grunt) ->
             if /[^ ][,{]$/.test(text)
               if options.lang is 'en'
                 if bool
-                  okMsg.push('No space! [selector]')
-                else
                   errMsg.push('No space! [selector]')
+                else
+                  okMsg.push('No space! [selector]')
               if options.lang is 'ja'
                 if bool
-                  okMsg.push('セレクタ後スペースなし')
-                else
                   errMsg.push('セレクタ後スペースなし')
+                else
+                  okMsg.push('セレクタ後スペースなし')
           if mode == 'property'
             if /: /.test(text)
               if options.lang is 'en'
@@ -174,13 +172,19 @@ module.exports = (grunt) ->
               okMsg.push('one property.')
             if options.lang is 'ja'
               okMsg.push('1行1プロパティ')
-          if /^(([^,{]+|[^,]+{[^}]+}[^,]+),){1,}([^,{]+|[^,]+{[^}]+}[^,]+){$/.test(text)
+          else if /^[^@]@[^(]+([^,]+,[^)]+)[^{]+[{,]$/.test(text)
+            if options.lang is 'en'
+              okMsg.push('Sass function.')
+            if options.lang is 'ja'
+              okMsg.push('Sass関数')
+          else if /^(([^,{]+|[^,]+{[^}]+}[^,]+),){1,}([^,{]+|[^,]+{[^}]+}[^,]+){$/.test(text)
             if options.lang is 'en'
               errMsg.push('Many properties!')
             if options.lang is 'ja'
               errMsg.push('1行に複数ある')
 
-      files.forEach(
+
+      this.filesSrc.forEach(
         (f) ->
           if !grunt.file.exists(f)
             grunt.log.warn('Source file "' + f + '" not found.')
@@ -241,6 +245,9 @@ module.exports = (grunt) ->
               if /^([ \t]+)?.*}([ \t/*]+)?$/.test(text[i])
 
                 indent--
+
+                if options.indent
+                  checkIndent(indent,text[i])
 
                 if options.blankLine.close
                   checkBlankLine(indent,text[i+1])
