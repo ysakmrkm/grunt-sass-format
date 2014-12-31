@@ -33,14 +33,13 @@ module.exports = (grunt) ->
     debug:false
   }
 
-  grunt.registerTask('sassFormat', 'Check format of sass you wish.',
+  grunt.registerMultiTask('sassFormat', 'Check format of sass you wish.',
     () ->
       options = {}
 
       config = grunt.config('sassFormat')
       options = defaultOptions
       merge(options,config.options)
-      files = config.files
 
       errMsg = []
       okMsg = []
@@ -184,7 +183,8 @@ module.exports = (grunt) ->
             if options.lang is 'ja'
               errMsg.push('1行に複数ある')
 
-      files.forEach(
+
+      this.filesSrc.forEach(
         (f) ->
           if !grunt.file.exists(f)
             grunt.log.warn('Source file "' + f + '" not found.')

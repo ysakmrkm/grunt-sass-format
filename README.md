@@ -41,7 +41,9 @@ grunt.initConfig({
       lang: 'en',
       debug: false
     },
-    files: ['path/to/target/files']
+    files: {
+      src: ['path/to/target/files']
+    }
   }
 });
 ```
@@ -99,7 +101,9 @@ Default value: `false`
 ```js
 grunt.initConfig({
   sassFormat: {
-    files: ['src/target1.scss', 'src/target2.scss']
+    files: {
+      src: ['src/target1.scss', 'src/target2.scss']
+    }
   }
 });
 ```
@@ -113,7 +117,9 @@ grunt.initConfig({
       indentChar: ' ',
       indentStep: 4
     },
-    files: ['src/target1.scss', 'src/target2.scss']
+    files: {
+      src: ['src/target1.scss', 'src/target2.scss']
+    }
   }
 });
 ```
@@ -128,3 +134,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * 2014-05-06   v0.0.5   Merge PR #3
 * 2014-05-06   v0.0.6   Merge PR #4
 * 2014-08-21   v0.0.7   Merge PR #7 / Update functions / Enable indent check
+* 2014-12-31   v0.0.8   Close Issues #8 / Some bug fix
