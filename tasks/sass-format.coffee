@@ -84,7 +84,6 @@ module.exports = (grunt) ->
               if options.lang is 'ja'
                 errMsg.push('インデント指定通りじゃない')
 
-
       #空白行チェック
       checkBlankLine =
         (indent,txt)->
